@@ -78,16 +78,16 @@ The linting tools described in this topic can all be integrated seamsly with you
   });
  ```
  **HTMLLINT**
-```
+ ```
   htmllint = require('gulp-htmllint');
  
   gulp.task('lint-html', function() {
       return gulp.src(paths.html)
           .pipe(htmllint());
   });
-```
+ ```
  **CSSLINT**
-```
+ ```
   var csslint = require('gulp-csslint');
  
   gulp.task('lint-csscss', function() {
@@ -95,14 +95,16 @@ The linting tools described in this topic can all be integrated seamsly with you
       .pipe(csslint())
       .pipe(csslint.reporter());
   });
-```
+ ```
+
 3. Next, we'll add a `paths` variable that we can use to define where the files are located that should be linted.
 ```
     paths = {
         html:['client/**/*.html','server/**/*.html'],
         css:['client/**/*.css','server/**/*.css'],
         js:['client/**/*.js','server/**/*.js','routes/**/*.js','!.meteor/**/*.js','app.js']
-    },```
+    },
+```
     The variables used here should corespond with what is defined in step 2 for `return gulp.src(paths.*)`, and the actual paths referenced within the brackets should identify the location of your JavaScript, HTML, or CSS code.
     
 Your resulting gulpfile should look something like this.
