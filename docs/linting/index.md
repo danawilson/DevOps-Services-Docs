@@ -5,8 +5,8 @@
 Linting is the process of performing static analysis on source code to flag patterns that might cause errors or other potential problems.
 
 * [Getting Started](#howtostart)
-* [Integrate linting into your project](#howtointegrate)
-* [Configure the pipeline](#configurepipeline)
+* [Integrate Linting Into Your Project](#howtointegrate)
+* [Configure The Pipeline](#configurepipeline)
 
 
 
@@ -33,7 +33,7 @@ Linters are available for most coding languages and can typically be implemented
 
 The linting tools that are described here can all be integrated seamlessly with your project by using the IBM Open ToolChain.  To accomplish this integration, we'll use [gulp](http://gulpjs.com/), a JavaScript task runner, to set up and configure the linters.  Then, we'll run them as a build stage in the DevOps Pipeline.
 
-###Linting plug-ins for gulp:
+####Linting plug-ins for gulp:
 * [JSHINT plug-in for gulp](https://www.npmjs.com/package/gulp-jshint)
 * [JSCS plug-in for gulp](https://www.npmjs.com/package/gulp-jscs)
 * [HTMLLINT plug-in for gulp](https://www.npmjs.com/package/gulp-htmllint)
@@ -41,13 +41,14 @@ The linting tools that are described here can all be integrated seamlessly with 
 
 ###Configure your linters in a gulpfile
 1. Create a `gulpfile.js` file in the root of your project.  The following example can be used to get started.
-```
+
+ ```
   var gulp = require('gulp');
   
   gulp.task('default', function() {
     // place code for your default task here
   });
-```
+ ```
 2. Next, use the following snippets to add one or more of the linting plug-ins to your gulpfile.
 
  **JSHINT**
