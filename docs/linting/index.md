@@ -172,16 +172,18 @@ gulp.task('lint-css', function () {
 ###Configure the pipeline
 
 With the linters configured, the next step is to set up the pipeline.
+
 1. Create a new stage in your pipeline using the default input settings.
 2. Add a new **Build** job to the stage using the **npm Builder Type**.
 3. Modify the **Build Shell Command** as follows:
-```
-#!/bin/bash
-npm install
-node_modules/gulp/bin/gulp.js
-```
-![New stage build job](images/pipeline_jobs_build.PNG)
-3. Click **Save** to complete configuration of the stage.
+
+ ```
+ #!/bin/bash
+ npm install
+ node_modules/gulp/bin/gulp.js
+ ```
+ ![New stage build job](images/pipeline_jobs_build.PNG)
+4. Click **Save** to complete configuration of the stage.
 
 The pipeline is now configured to perform linting on your code everytime you commit to your Git repository.
 
