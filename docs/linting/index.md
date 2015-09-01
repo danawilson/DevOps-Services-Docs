@@ -6,14 +6,14 @@ Linting is the process of performing static analysis on source code to flag patt
 
 * [How do you start using the tool?](#howtostart)
 * [How do you integrate the tool to be part of the toolchain?](#howtointegrate)
-* [What are the best practices for using the tool as part of the toolchain?](#bestpractices)
+
 
 
 
 <a name='howtostart'></a>
-##How to start linting
+##Getting Started
 
-While progressing through the development process, in addition to meeting functional requirements, it's also important to ensure that your code has no structural problems. Poorly structured code can impact the reliability and efficiency of your apps and make your code harder to maintain.  Linting is the key to finding and resolving these kinds of problems.  Linting tools can easily identify and correct common code mistakes, without having to execute your app or write any test cases.
+While progressing through the development process, in addition to meeting functional requirements, it's also important to ensure that your code has no structural problems. Poorly structured code can impact the reliability and efficiency of your apps and make your code harder to maintain.  Linting is the key to finding and resolving these kinds of problems.  Linting tools can easily identify and correct common code mistakes, without having to run your app or write any test cases.
 
 Linters are available for most coding languages and can also typically be consumed several ways to suit your development needs.  IBM Open ToolChain offers integration with all of the following linters.  To get started, identify the linters that you would like to use from the information below.   These linting tools can be used independently or incorporated into your build process through the use of gulp files
 
@@ -32,9 +32,9 @@ Linters are available for most coding languages and can also typically be consum
 
 
 <a name='howtointegrate'></a>
-##How to integrate linting
+##Integrate linting into your project
 
-The linting tools described in this topic can all be integrated seamsly with your project using the IBM Open ToolChain.  To accomplish this integration, we'll use [gulp](http://gulpjs.com/), a JavaScript task runner, to set up and configure the linters, and will then run them as a build stage in the DevOps Pipeling.
+The linting tools described in this topic can all be integrated seamsly with your project using the IBM Open ToolChain.  To accomplish this integration, we'll use [gulp](http://gulpjs.com/), a JavaScript task runner, to set up and configure the linters.  Then, we'll run them as a build stage in the DevOps Pipeling.
 
 ###Linting plug-ins for gulp:
 * [JSHINT plug-in for gulp](https://www.npmjs.com/package/gulp-jshint)
@@ -42,7 +42,7 @@ The linting tools described in this topic can all be integrated seamsly with you
 * [HTMLLINT plug-in for gulp](https://www.npmjs.com/package/gulp-htmllint)
 * [CSSLINT plug-in for gulp](https://www.npmjs.com/package/gulp-csslint)
 
-###Steps for integration
+###Configure your linters in a gulpfile
 1. Create a gulpfile.js file in the root of your project.  The following example can be used to get started.
 ```
   var gulp = require('gulp');
@@ -60,13 +60,13 @@ The linting tools described in this topic can all be integrated seamsly with you
   gulp.task('lint-js', function() {
     return gulp.src(paths.js)
       .pipe(jshint())
-      .pipe(jshint.reporter('YOUR_REPORTER_HERE'));
+      .pipe(jshint.reporter('default'));
   });
  ```
- Notes:
+ Details:
  * `return gulp.src()` is used to defines the location of the files that should be linted
- * `.pipe(jshint())` defines a file named `jshint` used to default configurations
- * `.pipe(jshint.reporter('default'));` defines a reporting value.
+ * `.pipe(jshint())` defines a file named `jshintrc` used to define default configurations
+ * `.pipe(jshint.reporter('default'));` defines a [reporting value](https://www.npmjs.com/package/gulp-jshint#reporters).
 
  **JSCS**
  ```
@@ -77,6 +77,10 @@ The linting tools described in this topic can all be integrated seamsly with you
           .pipe(jscs());
   });
  ```
+ Details:
+ * `return gulp.src()` is used to defines the location of the files that should be linted
+ * `.pipe(jscs());` defines a file named `jscsrc` used to define default configurations
+
  **HTMLLINT**
  ```
   htmllint = require('gulp-htmllint');
@@ -86,6 +90,10 @@ The linting tools described in this topic can all be integrated seamsly with you
           .pipe(htmllint());
   });
  ```
+  Details:
+ * `return gulp.src()` is used to defines the location of the files that should be linted
+ * `.pipe(htmllint());` defines a file named `htmllint` used to define default configurations
+
  **CSSLINT**
  ```
   var csslint = require('gulp-csslint');
@@ -96,6 +104,10 @@ The linting tools described in this topic can all be integrated seamsly with you
       .pipe(csslint.reporter());
   });
  ```
+ Details:
+ * `return gulp.src()` is used to defines the location of the files that should be linted
+ * `.pipe(csslint());` defines a file named `csslint` used to define default configurations
+ * `.pipe(csslint.reporter());` defines a [reporting value](https://www.npmjs.com/package/gulp-csslint#using-reporters).
 
 3. Next, we'll add a `paths` variable that we can use to define where the files are located that should be linted.
 ```
@@ -105,7 +117,7 @@ The linting tools described in this topic can all be integrated seamsly with you
         js:['client/**/*.js','server/**/*.js','routes/**/*.js','!.meteor/**/*.js','app.js']
     },
 ```
-    The variables used here should corespond with what is defined in step 2 for `return gulp.src(paths.*)`, and the actual paths referenced within the brackets should identify the location of your JavaScript, HTML, or CSS code.
+The variables used here should corespond with what is defined in step 2 for `return gulp.src(paths.*)`, and the actual paths referenced within the brackets should identify the location of your JavaScript, HTML, or CSS code.
     
 Your resulting gulpfile should look something like this.
 ```
@@ -157,8 +169,17 @@ gulp.task('lint-jscs', function () {
 });
 ```
 
+###Configure the pipeline
 
-<a name='bestpractices'></a>
-##Linting Best Practices
+With the linters configured, the next step is to set up the pipeline.
+1. Create a new stage that will build and then test your code.
+2. Add a npm build job to the stage using the following build shell command.
+```
+#!/bin/bash
+npm install
+node_modules/gulp/bin/gulp.js
+```
+3. Click **Save** to complete configuration of the stage.
 
-What are the best practices for using the tool as part of the toolchain? For example with Slack what do we say (or point to) about using different channels, bringing automated events into channels to get notified of dev and ops events, etc.
+The pipeline is now configured to run the linting tools that have been defined within the `gulpfile.js` file.
+
